@@ -1,0 +1,26 @@
+{
+  "name": "capstone",
+  "version": "1.0.0",
+  "description": "\"# CC-C23\"",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Naufal-Pasya/CC-C23.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Naufal-Pasya/CC-C23/issues"
+  },
+  "homepage": "https://github.com/Naufal-Pasya/CC-C23#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "firebase": "^9.22.0",
+    "firebase-admin": "^11.8.0",
+    "nodemon": "^2.0.22"
+  }
+}
