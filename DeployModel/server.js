@@ -4,8 +4,8 @@ const cors = require("cors"); // Ditambahkan untuk mengatasi masalah kebijakan C
 const app = express();
 
 // Muat model TensorFlow.js
-const modelPath = "path/to/model_saved.h5";
-const weightPath = "path/to/model_weights.h5";
+const modelPath = "https://storage.cloud.google.com/capstone-project-c23.appspot.com/Soil_Prediction/model_saved.h5";
+const weightPath = "https://storage.cloud.google.com/capstone-project-c23.appspot.com/Soil_Prediction/model_weights.h5";
 
 async function loadModel() {
   const model = await tf.loadLayersModel(tf.io.fileSystem(modelPath));
