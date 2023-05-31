@@ -8,8 +8,8 @@ const modelPath = "https://storage.cloud.google.com/capstone-project-c23.appspot
 const weightPath = "https://storage.cloud.google.com/capstone-project-c23.appspot.com/Soil_Prediction/model_weights.h5";
 
 async function loadModel() {
-  const model = await tf.loadLayersModel(tf.io.fileSystem(modelPath));
-  await model.loadWeights(tf.io.fileSystem(weightPath));
+  const model = await tf.loadLayersModel(modelPath);
+  await model.loadWeights(weightPath);
   return model;
 }
 
