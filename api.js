@@ -104,39 +104,44 @@ const db = getFirestore();
     });
     
 
-    api.get('/weather-forecast', async (req, res) => {
-      // Check if the user is authenticated
-      const user = auth.currentUser;
-      if (!user) {
-        return res.status(401).json({ error: 'User not authenticated' });
-      }
-    
-      const { location } = req.body;
-    
-      try {
-        // Make a request to WeatherAPI to fetch weather forecast
-        const response = await axios.get(`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}`);
-        const data = response.data;
-    
-        // Process the response and extract relevant information
-        const forecastDays = data.forecast.forecastday.map((forecast) => ({
-          date: forecast.date,
-          temperature: forecast.day.avgtemp_c,
-          humidity: forecast.day.avghumidity,
-          windSpeed: forecast.day.maxwind_kph,
-          text: forecast.day.condition.text
-        }));
-    
-        const weatherForecast = {
-          location: data.location.name,
-          forecast: forecastDays
-        };
-    
-        res.status(200).json(weatherForecast);
-      } catch (error) {
-        console.error('Weather retrieval error:', error);
-        res.status(500).json({ error: 'Failed to retrieve weather data' });
-      }
-    });
+    api.post('/weather-forecast', async (req, res) => {
+        // Check if the user is authenticated
+        const user = auth.currentUser;
+        if (!user) {
+          return res.status(401).json({ error: 'User not authenticated' });
+        }
+      
+        const { location } = req.body;
+      
+        try {
+          // Make a request to WeatherAPI to fetch weather forecast
+          const response = await axios.get('https://api.weatherapi.com/v1/forecast.json', {
+            params: {
+              key: apiKey,
+              q: location
+            }
+          });
+          const data = response.data;
+      
+          // Process the response and extract relevant information
+          const forecastDays = data.forecast.forecastday.map((forecast) => ({
+            date: forecast.date,
+            temperature: forecast.day.avgtemp_c,
+            humidity: forecast.day.avghumidity,
+            windSpeed: forecast.day.maxwind_kph,
+            text: forecast.day.condition.text
+          }));
+      
+          const weatherForecast = {
+            location: data.location.name,
+            forecast: forecastDays
+          };
+      
+          res.status(200).json(weatherForecast);
+        } catch (error) {
+          console.error('Weather retrieval error:', error);
+          res.status(500).json({ error: 'Failed to retrieve weather data' });
+        }
+      });
   
   module.exports = api;
