@@ -108,57 +108,44 @@ api.post('/signup', async (req, res) => {
       }
     });
     
-    
 
-    api.get('/weather-forecast', async (req, res) => {
-      // Check if the user is authenticated
-      const user = auth.currentUser;
-      if (!user) {
-        return res.status(401).json({ message: 'User not authenticated', error: true });
-      }
-    
-      const { location } = req.query; // Use req.query to access the query parameters
-    
-      try {
-        // Make a request to WeatherAPI to fetch weather forecast
-        const response = await axios.get('https://api.weatherapi.com/v1/forecast.json', {
-          params: {
-            key: apiKey,
-            q: location
-          }
-        });
-        const data = response.data;
-    
-        // Process the response and extract relevant information
-        const forecastDays = data.forecast.forecastday.map((forecast) => ({
-          date: forecast.date,
-          temperature: forecast.day.avgtemp_c,
-          humidity: forecast.day.avghumidity,
-          windSpeed: forecast.day.maxwind_kph,
-          text: forecast.day.condition.text
-        }));
-    
-        const weatherForecast = {
-          location: data.location.name,
-          forecast: forecastDays
-        };
-    
-        res.status(200).json(weatherForecast);
-      } catch (error) {
-        console.error('Weather retrieval error:', error.data);
-        res.status(500).json({ message: 'Failed to retrieve weather data', error: true });
-      }
-    });
-    
-
-      api.post('/signout', async (req, res) => {
+    api.post('/weather-forecast', async (req, res) => {
+        // Check if the user is authenticated
+        const user = auth.currentUser;
+        if (!user) {
+          return res.status(401).json({ error: 'User not authenticated' });
+        }
+      
+        const { location } = req.body;
+      
         try {
-          // Sign out the currently authenticated user
-          await auth.signOut();
-          res.status(200).json({ message: 'Sign-out successful', error: false });
+          // Make a request to WeatherAPI to fetch weather forecast
+          const response = await axios.get('https://api.weatherapi.com/v1/forecast.json', {
+            params: {
+              key: apiKey,
+              q: location
+            }
+          });
+          const data = response.data;
+      
+          // Process the response and extract relevant information
+          const forecastDays = data.forecast.forecastday.map((forecast) => ({
+            date: forecast.date,
+            temperature: forecast.day.avgtemp_c,
+            humidity: forecast.day.avghumidity,
+            windSpeed: forecast.day.maxwind_kph,
+            text: forecast.day.condition.text
+          }));
+      
+          const weatherForecast = {
+            location: data.location.name,
+            forecast: forecastDays
+          };
+      
+          res.status(200).json(weatherForecast);
         } catch (error) {
-          console.error('Sign-out error:', error);
-          res.status(500).json({ error: 'Sign-out failed', error: true });
+          console.error('Weather retrieval error:', error);
+          res.status(500).json({ error: 'Failed to retrieve weather data' });
         }
       });
   
