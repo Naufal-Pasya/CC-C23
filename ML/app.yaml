@@ -1,0 +1,17 @@
+runtime: custom
+env: flex
+
+manual_scaling:
+  instances: 1
+
+resources:
+  cpu: 4
+  memory_gb: 6
+
+env_variables:
+  GCS_BUCKET_NAME: "capstone-project-c23.appspot.com"
+  MODEL_FILE_PATH_1: "gs://${GCS_BUCKET_NAME}/Crop/Crop_predict.h5"
+  MODEL_FILE_PATH_2: "gs://${GCS_BUCKET_NAME}/Fertilizer/Fert_predict.h5"
+  MODEL_FILE_PATH_3: "gs://${GCS_BUCKET_NAME}/Paddy/Paddy_predict.h5"
+  MODEL_FILE_PATH_4: "gs://${GCS_BUCKET_NAME}/Cotton/modelcotton1_saved.h5"
+  MODEL_FILE_PATH_5: "gs://${GCS_BUCKET_NAME}/Soil_Prediction/model_saved.h5"
